@@ -62,32 +62,50 @@ def display_chart():
     # Ensure the "Date" column is in datetime format and filter rows from 2020 to 2025
     df["Date"] = pd.to_datetime(df["Date"])
 
-    # Ensure "Close" is numeric and handle non-numeric values
+    # Ensure "Close" and "Open" are numeric and handle non-numeric values
     df["Close"] = pd.to_numeric(df["Close"], errors="coerce")
+    df["Open"] = pd.to_numeric(df["Open"], errors="coerce")
 
-    # Drop rows with missing or NaN values in "Close"
-    df = df.dropna(subset=["Close"])
+    # Drop rows with missing or NaN values in "Close" or "Open"
+    df = df.dropna(subset=["Close", "Open"])
 
     # Filter rows between 2020 and 2025
     df = df[(df["Date"].dt.year >= 2020) & (df["Date"].dt.year <= 2025)]
 
-    # Group by year and month, then calculate the average "Close" value
+    # Group by year and month, then calculate the average "Close" and "Open" values
     df["YearMonth"] = df["Date"].dt.to_period("M")
-    monthly_avg = df.groupby("YearMonth")["Close"].mean().reset_index()
-    monthly_avg["YearMonth"] = monthly_avg["YearMonth"].dt.to_timestamp()
+    monthly_close_avg = df.groupby("YearMonth")["Close"].mean().reset_index()
+    monthly_open_avg = df.groupby("YearMonth")["Open"].mean().reset_index()
+
+    # Convert YearMonth back to timestamp for plotting
+    monthly_close_avg["YearMonth"] = monthly_close_avg["YearMonth"].dt.to_timestamp()
+    monthly_open_avg["YearMonth"] = monthly_open_avg["YearMonth"].dt.to_timestamp()
 
     # Create the line chart using Plotly
     fig = go.Figure()
+
+    # Add the "Close" trace
     fig.add_trace(go.Scatter(
-        x=monthly_avg["YearMonth"],
-        y=monthly_avg["Close"],
+        x=monthly_close_avg["YearMonth"],
+        y=monthly_close_avg["Close"],
         mode="lines+markers",
         name="Average Monthly Close"
     ))
+
+    # Add the "Open" trace in green color
+    fig.add_trace(go.Scatter(
+        x=monthly_open_avg["YearMonth"],
+        y=monthly_open_avg["Open"],
+        mode="lines+markers",
+        name="Average Monthly Open",
+        line=dict(color="green")
+    ))
+
+    # Update layout
     fig.update_layout(
-        title="Average Monthly Close (2020-2025)",
+        title="Average Monthly Close and Open (2020-2025)",
         xaxis_title="Date",
-        yaxis_title="Average Close",
+        yaxis_title="Value",
         template="plotly_white"
     )
 
@@ -105,7 +123,7 @@ def display_chart():
     </head>
     <body>
         <div style="text-align: center; margin-top: 50px;">
-            <h1>Line Chart: Average Monthly Close (2020-2025)</h1>
+            <h1>Line Chart: Average Monthly Close and Open (2020-2025)</h1>
             {chart_html}
         </div>
     </body>
@@ -113,7 +131,6 @@ def display_chart():
     """
 
     return html_template
-
 
 if __name__ == "__main__":
     app.run(debug=True)

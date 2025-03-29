@@ -18,4 +18,6 @@ Link To Dataset : https://www.kaggle.com/datasets/taimoor888/tesla-stock-price-d
 
 ### 4th Commit
 
+- I want to add a line plot to the same chart that plots the average monthly "Open" value using all dates from 2020 to 2025.
+
 ### 5th Commit
