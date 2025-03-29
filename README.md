@@ -14,6 +14,8 @@ Link To Dataset : https://www.kaggle.com/datasets/taimoor888/tesla-stock-price-d
 
 ### 3rd Commit
 
+- I want to create a line chart that plots the average monthly "Close" value using all dates from 2020 to 2025.
+
 ### 4th Commit
 
 ### 5th Commit
