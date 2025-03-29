@@ -4,9 +4,13 @@ Link To Dataset : https://www.kaggle.com/datasets/taimoor888/tesla-stock-price-d
 
 ### 1st Commit
 
-Initiated data.py to load TSLA00-25.csv to analyze the HTML dataframe.
+- Initiated data.py to load TSLA00-25.csv to analyze the HTML dataframe.
 
 ### 2nd Commit
+
+- I need to rename the "Price" column to "Date".
+
+- I need to remove the first two rows of the dataframe.
 
 ### 3rd Commit
 

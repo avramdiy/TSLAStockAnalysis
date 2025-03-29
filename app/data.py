@@ -16,6 +16,12 @@ def display_csv():
     # Load CSV into a DataFrame
     df = pd.read_csv(csv_path)
 
+    # Rename the "Price" column to "Date"
+    df.rename(columns={"Price": "Date"}, inplace=True)
+
+    # Remove the first two rows
+    df = df.iloc[2:].reset_index(drop=True)
+
     # Convert DataFrame to HTML
     table_html = df.to_html(classes="table table-striped", index=False)
 
